@@ -1,5 +1,10 @@
 # Morphida
 
+> **Fork 适配说明（Bigzhangbig，2026-10）**：本 fork 仅供自建自用。
+> 相对上游的改动：① 移除每日 schedule 构建（仅手动/推送触发）；
+> ② `workflow_dispatch` 增加 `frida_version` 输入，可锁定与客户端一致的版本
+>（留空或 `latest` 跟随上游最新）。构建产物发布在本仓库 Releases，token 明细见 release notes。
+
 **A rebuilt / 魔改 [Frida](https://frida.re) `frida-server` for Android arm64.**
 Follows official Frida release tags. Same client, same version number, different binary.
 

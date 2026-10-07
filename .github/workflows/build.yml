@@ -1,9 +1,12 @@
 name: build
 
 on:
-  schedule:
-    - cron: "17 4 * * *"      # daily ~04:17 UTC; cron only fires on default branch
   workflow_dispatch:
+    inputs:
+      frida_version:
+        description: "frida release tag to build (e.g. 17.22.2); empty or 'latest' tracks upstream"
+        required: false
+        default: "latest"
   push:
     branches: ["standalone"]
     paths:
@@ -23,13 +26,20 @@ jobs:
       should_build:  ${{ steps.decide.outputs.go }}
     steps:
       - id: frida
-        name: query frida latest release
+        name: resolve frida target version
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ver=$(gh api repos/frida/frida/releases/latest --jq .tag_name)
+          want="${{ inputs.frida_version || 'latest' }}"
+          if [ -z "$want" ] || [ "$want" = "latest" ]; then
+            ver=$(gh api repos/frida/frida/releases/latest --jq .tag_name)
+          else
+            gh api "repos/frida/frida/releases/tags/$ver" >/dev/null 2>&1 || true
+            gh api "repos/frida/frida/releases/tags/$want" --jq .tag_name >/dev/null
+            ver="$want"
+          fi
           echo "ver=$ver" >> "$GITHUB_OUTPUT"
-          echo "frida latest = $ver"
+          echo "frida target = $ver (requested: $want)"
 
       - id: tag
         name: compute build tag
@@ -38,20 +48,11 @@ jobs:
           echo "tag=${{ steps.frida.outputs.ver }}-r$rand" >> "$GITHUB_OUTPUT"
 
       - id: decide
-        name: skip-or-go
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: go
         run: |
-          ver="${{ steps.frida.outputs.ver }}"
-          have=$(gh release list --repo "${{ github.repository }}" --limit 100 \
-                  --json tagName --jq '[.[] | select(.tagName | startswith("'"$ver"'-"))] | length')
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$have" -gt 0 ]; then
-            echo "go=no" >> "$GITHUB_OUTPUT"
-            echo "cron + existing release for $ver -> skipping"
-          else
-            echo "go=yes" >> "$GITHUB_OUTPUT"
-            echo "will build (event=${{ github.event_name }} have=$have)"
-          fi
+          # schedule trigger removed in this fork: every dispatch/push builds
+          echo "go=yes" >> "$GITHUB_OUTPUT"
+          echo "will build (event=${{ github.event_name }})"
 
   build:
     needs: check
