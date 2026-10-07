@@ -44,6 +44,7 @@ SIG_TOKENS = [
     "re.frida",
     "frida-agent",
     "frida-core",
+    "frida-gum",
     "frida-helper",
     "frida-server",
     "projects/frida",

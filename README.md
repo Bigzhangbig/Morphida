@@ -22,7 +22,7 @@ Follows official Frida release tags. Same client, same version number, different
 | Protocol | stock | stock (`frida:rpc` and the usual client/server contract) |
 | Version | `17.17.0` | `17.17.0-r…` — the prefix **is** the Frida tag |
 | Artifact | `frida-server` | `frida-server-<ver>-android-arm64.gz` |
-| Extra | — | Per-build morph of static fingerprints; daily CI tracks new Frida releases |
+| Extra | — | Per-build morph of static fingerprints; CI tracks Frida releases (manual dispatch with optional version pin + push) |
 
 This is **not** a new instrumentation framework. If you already use Frida, you keep using the official client against this server.
 
@@ -38,7 +38,7 @@ This is a from-scratch `standalone` line of work (formerly Florida standalone). 
 | --- | --- |
 | **Target** | Android arm64 `frida-server` |
 | **Branch** | `standalone` (default) |
-| **Upstream** | latest Frida release tag (daily cron + manual) |
+| **Upstream** | latest Frida release tag (manual dispatch + push) |
 | **Assets** | `frida-server-<ver>-android-arm64.gz` |
 
 ## Features
@@ -148,7 +148,7 @@ Morphida 是套在 [Frida](https://frida.re) 外的**薄构建流水线**：仓�
 | --- | --- |
 | **产物** | Android arm64 `frida-server` |
 | **分支** | `standalone`（默认） |
-| **上游** | Frida 最新正式 tag（日构 cron + 手动） |
+| **上游** | Frida 最新正式 tag（手动 dispatch + push 触发） |
 | **资产名** | `frida-server-<版本>-android-arm64.gz` |
 
 ## 特性

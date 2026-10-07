@@ -29,12 +29,12 @@ jobs:
         name: resolve frida target version
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WANT: ${{ inputs.frida_version || 'latest' }}
         run: |
-          want="${{ inputs.frida_version || 'latest' }}"
+          want="${WANT:-latest}"
           if [ -z "$want" ] || [ "$want" = "latest" ]; then
             ver=$(gh api repos/frida/frida/releases/latest --jq .tag_name)
           else
-            gh api "repos/frida/frida/releases/tags/$ver" >/dev/null 2>&1 || true
             gh api "repos/frida/frida/releases/tags/$want" --jq .tag_name >/dev/null
             ver="$want"
           fi
