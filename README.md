@@ -132,7 +132,7 @@ Inspired by [Ylarod/Florida](https://github.com/Ylarod/Florida) and the wider an
 | 协议 | 官方 | 官方（含 `frida:rpc` 等客户端约定） |
 | 版本 | `17.17.0` | `17.17.0-r…` — **前缀就是** Frida tag |
 | 产物 | `frida-server` | `frida-server-<版本>-android-arm64.gz` |
-| 额外 | — | 每次构建 morph 静态指纹；日构跟上游新版 |
+| 额外 | — | 每次构建 morph 静态指纹；版本跟随构建输入（可锁定） |
 
 这**不是**一套新的插桩框架。你已经会用 Frida，就继续用官方 client 对这个 server。
 

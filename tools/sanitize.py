@@ -70,6 +70,7 @@ HARD_ZERO = [
     "frida-core",
     "frida-helper",
     "frida-server",
+    "frida-gum",
     "projects/frida",
     "Frida",   # GType / JS names must become SYMBOL.capitalize()
     "FRIDA",
